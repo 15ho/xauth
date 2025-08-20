@@ -1,7 +1,7 @@
 # XAuth
 > NOTE: This project is under development.
 
-The TOTP Authenticator is a Chrome extension that generates verification codes.
+A Chrome extension for generating TOTP codes.
 
 base on:
 - [React](https://reactjs.org/)
