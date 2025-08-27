@@ -1,3 +1,3 @@
-export const itemLockPasswd = "lockPasswd"
-export const itemTOTPKeys = "totpKeys"
-export const itemUnlockTime = "unlockTime"
+export const storageKeyLockPasswd = "lockPasswd"
+export const storageKeyTOTPKeys = "totpKeys"
+export const storageKeyUnlockTime = "unlockTime"
