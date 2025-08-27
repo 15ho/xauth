@@ -12,9 +12,9 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import LockPersonRoundedIcon from '@mui/icons-material/LockPersonRounded'
-import { TOTPKey, checkTotpKey, parseTotpKeyUri } from '@/components/common'
+import { TOTPKey, aseDecrypt, aseEncrypt, checkTotpKey, parseTotpKeyUri } from '@/components/common'
 import TOTPListItem from '@/components/TOTPListItem'
-import { storageKeyTOTPKeys } from '../constants/storage'
+import { storageKeyLockPasswd, storageKeyTOTPKeys } from '../constants/storage'
 import TOTPForm from '@/components/TOTPForm'
 
 const StyledFab = styled(Fab)({
@@ -36,9 +36,13 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
 
 
   useEffect(() => {
+    const storageLockPasswd = localStorage.getItem(storageKeyLockPasswd)
+    if (!storageLockPasswd) {
+      throw new Error('Lock screen password not set')
+    }
     const storageKeys = localStorage.getItem(storageKeyTOTPKeys)
     if (storageKeys) {
-      const keys = JSON.parse(storageKeys) as Map<string, string>
+      const keys = JSON.parse(aseDecrypt(storageKeys, storageLockPasswd)) as Map<string, string>
       let kkeys: TOTPKeys = {}
       Object.entries(keys).forEach(([, v]) => {
         const totpKey = parseTotpKeyUri(v)
@@ -51,6 +55,11 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
   }, [])
 
   const handleSubmit = (totpKey: TOTPKey) => {
+    const storageLockPasswd = localStorage.getItem(storageKeyLockPasswd)
+    if (!storageLockPasswd) {
+      throw new Error('Lock screen password not set')
+    }
+
     if (totpKeys && (totpKey.label in totpKeys)) {
       throw new Error('Key already exists')
     }
@@ -58,9 +67,8 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
     if (!totpKeys) {
       const totpKeys = { [totpKey.label]: totpKey }
       const storageTotpKeys = { [totpKey.label]: totpKey.toString() }
-      console.log('totpKeys', storageTotpKeys, JSON.stringify(storageTotpKeys))
 
-      localStorage.setItem('totpKeys', JSON.stringify(storageTotpKeys))
+      localStorage.setItem('totpKeys', aseEncrypt(JSON.stringify(storageTotpKeys), storageLockPasswd))
       setTOTPKeys(totpKeys)
     } else {
       totpKeys[totpKey.label] = totpKey
@@ -68,9 +76,8 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
       Object.entries(totpKeys).forEach(([k, v]) => {
         storageTotpKeys[k] = v.toString()
       });
-      localStorage.setItem('totpKeys', JSON.stringify(storageTotpKeys))
+      localStorage.setItem('totpKeys', aseEncrypt(JSON.stringify(storageTotpKeys), storageLockPasswd))
     }
-
     setTotpKeyForm(false)
   }
 

@@ -10,9 +10,4 @@ base on:
 - [Material UI](https://mui.com/material-ui/)
 - [OTPAuth](https://github.com/hectorm/otpauth)
 - [jsQR](https://github.com/cozmo/jsQR)
-
-## TODO
-- [ ] security
-- [ ] theme
-- [ ] i18n
-- [ ] logo
+- [crypto-js](https://github.com/brix/crypto-js)
