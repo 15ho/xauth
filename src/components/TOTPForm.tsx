@@ -14,7 +14,6 @@ import {
 } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import jsQR from 'jsqr'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import KeySharpIcon from '@mui/icons-material/KeySharp'
 import { checkTotpKey, parseTotpKeyUri, TOTPKey } from './common'
 
@@ -108,13 +107,14 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    props.onClose()
     if (formData) {
       try {
         props.onSubmit(formData)
       } catch (error) {
-        setError('Invalid TOTP key')
+        setError('Import key failed:' + error)
+        return
       }
+      props.onClose()
     }
   }
 
@@ -123,6 +123,7 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
   }
 
   const handleRemove = () => {
+    setError('')
     setFormData(undefined)
   }
 
@@ -168,7 +169,6 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
                   Your 2FA QR code image will be automatically detected and parsed
                 </Typography>
               </UploadArea>
-
               {error && (
                 <Typography variant="body2" color="error" sx={{ my: 2 }}>
                   {error}
@@ -197,13 +197,18 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
                   />
                 ))
               }
+              {error && (
+                <Typography variant="body2" color="error" sx={{ my: 2 }}>
+                  {error}
+                </Typography>
+              )}
               <Button style={{ color: '#7f0b13f2' }} onClick={handleRemove}>remove</Button>
             </StyledPaper>
           )}
 
           <DialogActions sx={{ px: 3, pb: 3 }}>
             <Button onClick={props.onClose}>cancel</Button>
-            <Button type="submit" variant="contained" disabled={!formData}>
+            <Button type="submit" variant="contained" disabled={!formData || error !== ''}>
               Submit
             </Button>
           </DialogActions>

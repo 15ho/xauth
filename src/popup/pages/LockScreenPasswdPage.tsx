@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { storageKeyLockPasswd } from '../constants/storage'
 import { Button, CssBaseline, TextField, Typography } from '@mui/material'
 import LockPersonRoundedIcon from '@mui/icons-material/LockPersonRounded'
+import { encryptPasswd } from '@/components/common'
 
 export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
   const [p1, setP1] = useState('')
@@ -33,7 +34,7 @@ export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
       setError('Passwords do not match')
       return
     }
-    localStorage.setItem(storageKeyLockPasswd, p1)
+    localStorage.setItem(storageKeyLockPasswd, encryptPasswd(p1))
     props.onSetting()
   }
 

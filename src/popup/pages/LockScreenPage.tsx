@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { storageKeyLockPasswd } from '../constants/storage'
 import { Button, CssBaseline, TextField, Typography } from '@mui/material'
+import { encryptPasswd } from '@/components/common'
 
 export default function LockScreenPage(props: { onUnlock: () => void }) {
   const [passwd, setPasswd] = useState('')
@@ -12,7 +13,7 @@ export default function LockScreenPage(props: { onUnlock: () => void }) {
     if (!storagePasswd) {
       return
     }
-    if (storagePasswd !== passwd) {
+    if (storagePasswd !== encryptPasswd(passwd)) {
       setError('Invalid password')
       return
     }
