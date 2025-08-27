@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { storageKeyLockPasswd } from '../constants/storage'
+import { Button, CssBaseline, TextField } from '@mui/material'
 
 export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
   const [p1, setP1] = useState('')
@@ -10,21 +11,19 @@ export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
   const handleP1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError('')
     const inputP1 = e.target.value
+    setP1(inputP1)
     if (inputP1.length < 6) {
       setError('password must be at least 6 characters long')
-      return
     }
-    setP1(inputP1)
   }
 
   const handleP2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError('')
     const inputP2 = e.target.value
+    setP2(inputP2)
     if (inputP2 !== p1) {
       setError('Passwords do not match')
-      return
     }
-    setP2(inputP2)
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,33 +37,47 @@ export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
   }
 
   return (
-    <div className="auth-container">
-      <div className="auth-box">
-        <h1> Set your lock screen password </h1>
+    <>
+      <CssBaseline />
+      <h1> Set your lock screen password </h1>
 
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input
-              type="password"
-              name="p1"
-              onChange={handleP1Change}
-              placeholder="password"
-              required
-            />
-            <input
-              type="password"
-              name="p2"
-              onChange={handleP2Change}
-              placeholder="confirm password"
-              required
-            />
-            <button type="submit">Submit</button>
-          </div>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Enter password"
+          variant="outlined"
+          value={p1}
+          onChange={handleP1Change}
+          error={!!error}
+          helperText={error}
+          type="password"
+          sx={{ width: '90%', marginTop: '20px' }}
+        />
+        <TextField
+          label="Confirm password"
+          variant="outlined"
+          value={p2}
+          onChange={handleP2Change}
+          error={!!error}
+          helperText={error}
+          type="password"
+          sx={{ width: '90%', marginTop: '20px' }}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            marginTop: '100px',
+            width: '88%',
+            height: '45px',
+            fontSize: '15px',
+            borderRadius: '18px'
+          }}
+          disabled={!p1 || !p2}>
+          Submit
+        </Button>
 
-          {error && <div className="error">{error}</div>}
-        </form>
+      </form>
 
-      </div>
-    </div>
+    </>
   )
 }
