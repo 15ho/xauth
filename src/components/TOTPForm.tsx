@@ -15,6 +15,7 @@ import {
 import { alpha } from '@mui/material/styles'
 import jsQR from 'jsqr'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import KeySharpIcon from '@mui/icons-material/KeySharp'
 import { checkTotpKey, parseTotpKeyUri, TOTPKey } from './common'
 
 const BlurredDialog = styled(Dialog)(({ theme }) => ({
@@ -144,7 +145,8 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
           }
         }}
       >
-        <DialogTitle>Import Key</DialogTitle>
+        <DialogTitle>
+        </DialogTitle>
 
         <Container maxWidth="sm">
           {!formData && (
@@ -158,7 +160,7 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
               />
 
               <UploadArea onClick={handleUploadClick}>
-                <CloudUploadIcon color="primary" sx={{ fontSize: 30, mb: 0 }} />
+                <KeySharpIcon fontSize="large" color='primary' />
                 <Typography variant="h6" gutterBottom>
                   Click or drop an image in this area
                 </Typography>

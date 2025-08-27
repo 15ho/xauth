@@ -10,10 +10,8 @@ import {
   Paper,
   List,
 } from '@mui/material'
-import {
-  Add as AddIcon,
-  LockClockRounded as LockPersonRoundedIcon
-} from '@mui/icons-material'
+import AddIcon from '@mui/icons-material/Add'
+import LockPersonRoundedIcon from '@mui/icons-material/LockPersonRounded'
 import { TOTPKey, checkTotpKey, parseTotpKeyUri } from '@/components/common'
 import TOTPListItem from '@/components/TOTPListItem'
 import { storageKeyTOTPKeys } from '../constants/storage'

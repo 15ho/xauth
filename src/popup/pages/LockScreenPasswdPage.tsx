@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { storageKeyLockPasswd } from '../constants/storage'
 import { Button, CssBaseline, TextField, Typography } from '@mui/material'
-import {
-  LockClockRounded as LockPersonRoundedIcon
-} from '@mui/icons-material'
+import LockPersonRoundedIcon from '@mui/icons-material/LockPersonRounded'
 
 export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
   const [p1, setP1] = useState('')
