@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { storageKeyLockPasswd } from '../constants/storage'
-import { Button, CssBaseline, TextField } from '@mui/material'
+import { Button, CssBaseline, TextField, Typography } from '@mui/material'
+import {
+  LockClockRounded as LockPersonRoundedIcon
+} from '@mui/icons-material'
 
 export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
   const [p1, setP1] = useState('')
@@ -39,7 +42,10 @@ export default function LockScreenPasswdPage(props: { onSetting: () => void }) {
   return (
     <>
       <CssBaseline />
-      <h1> Set your lock screen password </h1>
+      <LockPersonRoundedIcon fontSize='large' sx={{ mt: '30px' }} />
+      <Typography variant="h6" gutterBottom sx={{ mt: '10px', mb: '25px' }}>
+        Setup Lock Screen Password
+      </Typography>
 
       <form onSubmit={handleSubmit}>
         <TextField
