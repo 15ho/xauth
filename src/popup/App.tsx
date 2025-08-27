@@ -1,61 +1,56 @@
 import { useState, useEffect } from 'react'
-import TOTPPage from './pages/TOTPPage.tsx'
-import LockScreenPage from './pages/LockScreenPage.tsx'
+import AppPage from './pages/AppPage'
+import LockScreenPage from './pages/LockScreenPage'
 import './App.css'
-import LockScreenPasswdPage from './pages/LockScreenPasswdPage.tsx'
-import { itemLockPasswd, itemUnlockTime } from './constants/storage'
+import LockScreenPasswdPage from './pages/LockScreenPasswdPage'
+import { storageKeyLockPasswd, storageKeyUnlockTime } from './constants/storage'
 
 export default function App() {
-	const [lockPasswdConfigured, setLockPasswdConfigured] = useState(false)
-	const [lockScreen, setLockScreen] = useState(true)
-	const autoLockInterval = 1000 * 60 * 5 // 5 minutes
+  const [lockPasswdConfigured, setLockPasswdConfigured] = useState(false)
+  const [lockScreen, setLockScreen] = useState(true)
+  const autoLockInterval = 1000 * 60 * 5 // 5 minutes
 
-	useEffect(() => {
-		const storageLockPasswd = localStorage.getItem(itemLockPasswd)
-		if (storageLockPasswd) {
-			setLockPasswdConfigured(true)
-		}
-		const storageUnlockTime = localStorage.getItem(itemUnlockTime)
-		if (storageUnlockTime) {
-			const unlockTime = parseInt(storageUnlockTime)
-			if (unlockTime + autoLockInterval > Date.now()) {
-				setLockScreen(false)
-			}
-		}
-	}, [])
+  useEffect(() => {
+    const storageLockPasswd = localStorage.getItem(storageKeyLockPasswd)
+    if (storageLockPasswd) {
+      setLockPasswdConfigured(true)
+    }
+    const storageUnlockTime = localStorage.getItem(storageKeyUnlockTime)
+    if (storageUnlockTime) {
+      const unlockTime = parseInt(storageUnlockTime)
+      if (unlockTime + autoLockInterval > Date.now()) {
+        setLockScreen(false)
+      }
+    }
+  }, [])
 
-	const handleUnlock = () => {
-		setLockScreen(false)
-		localStorage.setItem(itemUnlockTime, Date.now().toString())
-	}
+  const handleUnlock = () => {
+    setLockScreen(false)
+    localStorage.setItem(storageKeyUnlockTime, Date.now().toString())
+  }
 
-	const handleSetting = () => {
-		setLockPasswdConfigured(true)
-	}
+  const handleLockScreen = () => {
+    setLockScreen(true)
+    localStorage.removeItem(storageKeyUnlockTime)
+  }
 
-	const handleLock = () => {
-		setLockScreen(true)
-		localStorage.removeItem(itemUnlockTime)
-	}
+  const handleSetting = () => {
+    setLockPasswdConfigured(true)
+  }
 
-	return (
-		<div>
-			{
-				lockPasswdConfigured ?
-					(lockScreen ?
-						(<LockScreenPage onUnlock={handleUnlock} />)
-						:
-						(
-							<div>
-								<h1> TOTP Codes </h1>
-								<TOTPPage />
-								<hr />
-								<button onClick={handleLock}>Lock Screen</button>
-							</div>
-						))
-					:
-					(<LockScreenPasswdPage onSetting={handleSetting} />)
-			}
-		</div>
-	)
+  return (
+    <>
+      {
+        lockPasswdConfigured ?
+          (lockScreen ?
+            (<LockScreenPage onUnlock={handleUnlock} />)
+            :
+            (
+              <AppPage handleLockScreen={handleLockScreen} />
+            ))
+          :
+          (<LockScreenPasswdPage onSetting={handleSetting} />)
+      }
+    </>
+  )
 }

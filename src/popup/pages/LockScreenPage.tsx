@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { itemLockPasswd } from '../constants/storage'
+import { storageKeyLockPasswd } from '../constants/storage'
 
 export default function LockScreenPage(props: { onUnlock: () => void }) {
 	const [passwd, setPasswd] = useState('')
@@ -7,7 +7,7 @@ export default function LockScreenPage(props: { onUnlock: () => void }) {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const storagePasswd = localStorage.getItem(itemLockPasswd)
+		const storagePasswd = localStorage.getItem(storageKeyLockPasswd)
 		if (!storagePasswd) {
 			return
 		}
