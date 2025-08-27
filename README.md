@@ -7,6 +7,9 @@ base on:
 - [React](https://reactjs.org/)
 - [Vite](https://vitejs.dev/)
 - [CRXJS](https://crxjs.dev/vite-plugin)
+- [Material UI](https://mui.com/material-ui/)
+- [OTPAuth](https://github.com/hectorm/otpauth)
+- [jsQR](https://github.com/cozmo/jsQR)
 
 ## TODO
 - [ ] security

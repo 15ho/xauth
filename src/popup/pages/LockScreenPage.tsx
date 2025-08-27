@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { storageKeyLockPasswd } from '../constants/storage'
-import { Button, CssBaseline, TextField } from '@mui/material'
+import { Button, CssBaseline, TextField, Typography } from '@mui/material'
 
 export default function LockScreenPage(props: { onUnlock: () => void }) {
   const [passwd, setPasswd] = useState('')
@@ -22,7 +22,9 @@ export default function LockScreenPage(props: { onUnlock: () => void }) {
   return (
     <>
       <CssBaseline />
-      <h1> XAuth </h1>
+      <Typography variant="h2" gutterBottom sx={{ mt: '40px', mb: '20px' }}>
+        XAuth
+      </Typography>
 
       <form onSubmit={handleSubmit} style={{ marginTop: '100px' }}>
         <TextField
