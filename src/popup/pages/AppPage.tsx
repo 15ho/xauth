@@ -103,13 +103,16 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
     if (storageKeys) {
       const keys = JSON.parse(aseDecrypt(storageKeys, storageLockPasswd)) as Map<string, string>
       let kkeys: TOTPKeys = {}
+      let storageKKeys: Record<string, string> = {}
       Object.entries(keys).forEach(([, v]) => {
         const totpKey = parseTotpKeyUri(v)
         if (totpKey && totpKey.label !== delTotpKeyLabel) {
           kkeys[totpKey.label] = totpKey
+          storageKKeys[totpKey.label] = totpKey.toString()
         }
       })
       setTOTPKeys(kkeys)
+      localStorage.setItem('totpKeys', aseEncrypt(JSON.stringify(storageKKeys), storageLockPasswd))
     }
 
     setDelTotpKeyConfirmDialog(false)
