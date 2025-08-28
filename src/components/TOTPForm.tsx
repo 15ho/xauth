@@ -15,7 +15,7 @@ import {
 import { alpha } from '@mui/material/styles'
 import jsQR from 'jsqr'
 import KeySharpIcon from '@mui/icons-material/KeySharp'
-import { checkTotpKey, parseTotpKeyUri, TOTPKey } from './common'
+import { parseTotpKeyUri, TOTPKey } from './common'
 
 const BlurredDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-container': {
@@ -85,7 +85,7 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
 
         if (code) {
           const totpKey = parseTotpKeyUri(code.data)
-          if (totpKey && checkTotpKey(totpKey)) {
+          if (totpKey) {
             setFormData(totpKey)
           } else {
             setError('Invalid TOTP key')

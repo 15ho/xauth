@@ -1,4 +1,8 @@
 # XAuth
+
+[![Tests on Linux, MacOS and Windows](https://github.com/15ho/xauth/workflows/Test/badge.svg)](https://github.com/15ho/xauth/actions?query=workflow%3ATest)
+[![codecov](https://codecov.io/gh/15ho/xauth/branch/main/graph/badge.svg)](https://codecov.io/gh/15ho/xauth)
+
 > NOTE: This project is under development.
 
 A Chrome extension for generating TOTP codes.

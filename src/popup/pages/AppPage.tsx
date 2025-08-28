@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import LockPersonRoundedIcon from '@mui/icons-material/LockPersonRounded'
-import { TOTPKey, aseDecrypt, aseEncrypt, checkTotpKey, encryptPasswd, parseTotpKeyUri } from '@/components/common'
+import { TOTPKey, aseDecrypt, aseEncrypt, encryptPasswd, parseTotpKeyUri } from '@/components/common'
 import TOTPListItem from '@/components/TOTPListItem'
 import { storageKeyLockPasswd, storageKeyTOTPKeys } from '../constants/storage'
 import TOTPForm from '@/components/TOTPForm'
@@ -49,7 +49,7 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
       let kkeys: TOTPKeys = {}
       Object.entries(keys).forEach(([, v]) => {
         const totpKey = parseTotpKeyUri(v)
-        if (totpKey && checkTotpKey(totpKey)) {
+        if (totpKey) {
           kkeys[totpKey.label] = totpKey
         }
       })

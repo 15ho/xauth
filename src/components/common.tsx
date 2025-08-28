@@ -3,14 +3,6 @@ import CryptoJS from "crypto-js"
 
 export type TOTPKey = OTPAuth.TOTP
 
-export function checkTotpKey(totpKey: TOTPKey) {
-  try {
-    return totpKey.generate() !== ''
-  } catch (e) {
-    return false
-  }
-}
-
 export function parseTotpKeyUri(totpKeyUri: string): TOTPKey | undefined {
   try {
     const otpObj = OTPAuth.URI.parse(totpKeyUri)
