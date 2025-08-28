@@ -12,10 +12,11 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import LockPersonRoundedIcon from '@mui/icons-material/LockPersonRounded'
-import { TOTPKey, aseDecrypt, aseEncrypt, checkTotpKey, parseTotpKeyUri } from '@/components/common'
+import { TOTPKey, aseDecrypt, aseEncrypt, checkTotpKey, encryptPasswd, parseTotpKeyUri } from '@/components/common'
 import TOTPListItem from '@/components/TOTPListItem'
 import { storageKeyLockPasswd, storageKeyTOTPKeys } from '../constants/storage'
 import TOTPForm from '@/components/TOTPForm'
+import ConfirmDialog from '@/components/ConfirmDialog'
 
 const StyledFab = styled(Fab)({
   position: 'absolute',
@@ -33,6 +34,8 @@ type TOTPKeys = {
 export default function AppPage(props: { handleLockScreen: () => void }) {
   const [totpKeyForm, setTotpKeyForm] = useState(false)
   const [totpKeys, setTOTPKeys] = useState<TOTPKeys>()
+  const [delTotpKeyConfirmDialog, setDelTotpKeyConfirmDialog] = useState(false)
+  const [delTotpKeyLabel, setDelTotpKeyLabel] = useState('')
 
 
   useEffect(() => {
@@ -81,6 +84,38 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
     setTotpKeyForm(false)
   }
 
+  const handleDelTOTPKey = (confirm: boolean, password: string) => {
+    if (!confirm) {
+      setDelTotpKeyConfirmDialog(false)
+      setDelTotpKeyLabel('')
+      return
+    }
+
+    const storageLockPasswd = localStorage.getItem(storageKeyLockPasswd)
+    if (!storageLockPasswd) {
+      throw new Error('Lock screen password not set')
+    }
+    if (encryptPasswd(password) !== storageLockPasswd) {
+      throw new Error('Invalid password')
+    }
+
+    const storageKeys = localStorage.getItem(storageKeyTOTPKeys)
+    if (storageKeys) {
+      const keys = JSON.parse(aseDecrypt(storageKeys, storageLockPasswd)) as Map<string, string>
+      let kkeys: TOTPKeys = {}
+      Object.entries(keys).forEach(([, v]) => {
+        const totpKey = parseTotpKeyUri(v)
+        if (totpKey && totpKey.label !== delTotpKeyLabel) {
+          kkeys[totpKey.label] = totpKey
+        }
+      })
+      setTOTPKeys(kkeys)
+    }
+
+    setDelTotpKeyConfirmDialog(false)
+    setDelTotpKeyLabel('')
+  }
+
 
   return (
     <>
@@ -88,9 +123,9 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
 
       <Paper square sx={{ pb: 0, boxShadow: 'none' }}>
         {totpKeys &&
-          <List sx={{ mb: 0, pb: 0 }}>
+          <List sx={{ mb: 0, pt: 0, pb: '80px' }}>
             {Object.entries(totpKeys).map(([, key]) => (
-              <TOTPListItem totpKey={key} />
+              <TOTPListItem totpKey={key} onContextMenu={() => { setDelTotpKeyConfirmDialog(true), setDelTotpKeyLabel(key.label) }} />
             ))}
           </List>}
       </Paper>
@@ -108,6 +143,10 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
       </AppBar>
 
       {totpKeyForm && (<TOTPForm onClose={() => setTotpKeyForm(false)} onSubmit={handleSubmit} />)}
+
+      {delTotpKeyConfirmDialog &&
+        delTotpKeyLabel &&
+        (<ConfirmDialog confirmMsg={`Are you sure to delete "${delTotpKeyLabel}"?`} onClick={handleDelTOTPKey} />)}
 
     </>
   )
