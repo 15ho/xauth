@@ -127,8 +127,15 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
       <Paper square sx={{ pb: 0, boxShadow: 'none' }}>
         {totpKeys &&
           <List sx={{ mb: 0, pt: 0, pb: '80px' }}>
-            {Object.entries(totpKeys).map(([, key]) => (
-              <TOTPListItem totpKey={key} onContextMenu={() => { setDelTotpKeyConfirmDialog(true), setDelTotpKeyLabel(key.label) }} />
+            {Object.entries(totpKeys).map(([, v]) => (
+              <TOTPListItem
+                // FIX: Each child in a list should have a unique "key" prop.%s%s 
+                // See https://react.dev/link/warning-keys for more information
+                // Check the render method of `ul`. It was passed a child from AppPage.
+                key={v.label}
+                totpKey={v}
+                onContextMenu={() => { setDelTotpKeyConfirmDialog(true), setDelTotpKeyLabel(v.label) }}
+              />
             ))}
           </List>}
       </Paper>
