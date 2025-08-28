@@ -55,7 +55,10 @@ export default function TOTPListItem(props: { totpKey: TOTPKey, onContextMenu: (
           boxShadow: 'var(--Paper-shadow)'
         }}
         onClick={handleCopyOtp}
-        onContextMenu={() => { props.onContextMenu() }}
+        onContextMenu={(e) => {
+          e.preventDefault()
+          props.onContextMenu()
+        }}
       >
         <ListItemText
           sx={{ ml: '15px' }}
