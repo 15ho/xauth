@@ -10,7 +10,7 @@ import {
 import { useState, useEffect } from 'react'
 import { TOTPKey } from './common'
 
-export default function TOTPListItem(props: { totpKey: TOTPKey }) {
+export default function TOTPListItem(props: { totpKey: TOTPKey, onContextMenu: () => void }) {
   const [otpRes, setOtpRes] = useState({ otp: '', counter: 0 })
   const [progress, setProgress] = useState(0)
   const [alertRes, setAlertRes] = useState<{
@@ -48,7 +48,15 @@ export default function TOTPListItem(props: { totpKey: TOTPKey }) {
   return (
     <>
       {alertRes && (<Alert variant='standard' severity={alertRes.level} >{alertRes.msg}</Alert>)}
-      <ListItemButton sx={{ width: '320px', height: '95px', boxShadow: 'var(--Paper-shadow)' }} onClick={handleCopyOtp} >
+      <ListItemButton
+        sx={{
+          width: '320px',
+          height: '95px',
+          boxShadow: 'var(--Paper-shadow)'
+        }}
+        onClick={handleCopyOtp}
+        onContextMenu={() => { props.onContextMenu() }}
+      >
         <ListItemText
           sx={{ ml: '15px' }}
           primary={

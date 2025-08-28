@@ -14,15 +14,9 @@
 
 
   /* --- hide scrollbar --- */
-  overflow: auto;
-
   &::-webkit-scrollbar {
     display: none;
   }
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  /* --- hide scrollbar --- */
 }
 
 a {

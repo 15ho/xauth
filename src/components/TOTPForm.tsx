@@ -128,92 +128,88 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
   }
 
   return (
-    <>
-      <BlurredDialog
-        open={true}
-        onClose={(props.onClose)}
-        slotProps={{
-          backdrop: {
-            style: {
-              backdropFilter: 'blur(4px)',
-              backgroundColor: 'rgba(255, 255, 255, 0.5)'
-            }
-          },
-          paper: {
-            style: {
-              overflowY: 'hidden',
-            }
+    <BlurredDialog
+      open={true}
+      onClose={(props.onClose)}
+      slotProps={{
+        backdrop: {
+          style: {
+            backdropFilter: 'blur(4px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)'
           }
-        }}
-      >
-        <DialogTitle>
-        </DialogTitle>
+        },
+        paper: {
+          style: {
+            overflowY: 'hidden',
+          }
+        }
+      }}
+    >
 
-        <Container maxWidth="sm">
-          {!formData && (
-            <StyledPaper>
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleFileSelect}
-                style={{ display: 'none' }}
-              />
+      <Container maxWidth="sm" sx={{ mt: '5px' }}>
+        {!formData && (
+          <StyledPaper>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              style={{ display: 'none' }}
+            />
 
-              <UploadArea onClick={handleUploadClick}>
-                <KeySharpIcon fontSize="large" color='primary' />
-                <Typography variant="h6" gutterBottom>
-                  Click or drop an image in this area
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Your 2FA QR code image will be automatically detected and parsed
-                </Typography>
-              </UploadArea>
-              {error && (
-                <Typography variant="body2" color="error" sx={{ my: 2 }}>
-                  {error}
-                </Typography>
-              )}
-            </StyledPaper>
-          )}
-        </Container>
+            <UploadArea onClick={handleUploadClick}>
+              <KeySharpIcon fontSize="large" color='primary' />
+              <Typography variant="h6" gutterBottom>
+                Click or drop an image in this area
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Your 2FA QR code image will be automatically detected and parsed
+              </Typography>
+            </UploadArea>
+            {error && (
+              <Typography variant="body2" color="error" sx={{ my: 2 }}>
+                {error}
+              </Typography>
+            )}
+          </StyledPaper>
+        )}
+      </Container>
 
-        <form onSubmit={handleSubmit}>
-          {formData && (
-            <StyledPaper sx={{ padding: '1px' }}>
-              {
-                (["issuer", "label", "algorithm", "digits", "period"] as (keyof TOTPKey)[]).map((field) => (
-                  <StyledTextField
-                    label={field.toUpperCase()}
-                    value={formData[field]}
-                    slotProps={{
-                      input: {
-                        readOnly: true,
-                      },
-                    }}
-                    variant='filled'
-                    focused
-                    color='success'
-                  />
-                ))
-              }
-              {error && (
-                <Typography variant="body2" color="error" sx={{ my: 2 }}>
-                  {error}
-                </Typography>
-              )}
-              <Button style={{ color: '#7f0b13f2' }} onClick={handleRemove}>remove</Button>
-            </StyledPaper>
-          )}
+      <form onSubmit={handleSubmit}>
+        {formData && (
+          <StyledPaper>
+            {
+              (["issuer", "label", "algorithm", "digits", "period"] as (keyof TOTPKey)[]).map((field) => (
+                <StyledTextField
+                  label={field.toUpperCase()}
+                  value={formData[field]}
+                  slotProps={{
+                    input: {
+                      readOnly: true,
+                    },
+                  }}
+                  variant='filled'
+                  focused
+                  color='success'
+                />
+              ))
+            }
+            {error && (
+              <Typography variant="body2" color="error" sx={{ my: 2 }}>
+                {error}
+              </Typography>
+            )}
+            <Button style={{ color: '#7f0b13f2' }} onClick={handleRemove}>remove</Button>
+          </StyledPaper>
+        )}
 
-          <DialogActions sx={{ px: 3, pb: 3 }}>
-            <Button onClick={props.onClose}>cancel</Button>
-            <Button type="submit" variant="contained" disabled={!formData || error !== ''}>
-              Submit
-            </Button>
-          </DialogActions>
-        </form>
-      </BlurredDialog>
-    </>
+        <DialogActions sx={{ px: 3, pb: 3 }}>
+          <Button onClick={props.onClose}>cancel</Button>
+          <Button type="submit" variant="contained" disabled={!formData || error !== ''}>
+            Submit
+          </Button>
+        </DialogActions>
+      </form>
+    </BlurredDialog>
   )
 }
