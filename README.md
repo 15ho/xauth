@@ -15,3 +15,15 @@ base on:
 - [OTPAuth](https://github.com/hectorm/otpauth)
 - [jsQR](https://github.com/cozmo/jsQR)
 - [crypto-js](https://github.com/brix/crypto-js)
+
+## Development
+```shell
+npm install
+npm run dev # hot reload
+# generate "dist" directory
+
+# --- Install xauth extension in chrome ---
+# 1. Chrome open link: chrome://extensions/
+# 2. Enable developer mode
+# 3. Click "Load unpacked" (Select the "dist" directory)
+```
