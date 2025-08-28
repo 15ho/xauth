@@ -65,7 +65,6 @@ export default function ConfirmDialog(props: { confirmMsg: string, onClick: (con
         inputRef={inputRef}
         error={!!error}
         helperText={error}
-        required
       />
 
       <DialogActions sx={{ px: 3, pb: 3 }}>

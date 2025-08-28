@@ -160,7 +160,7 @@ export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKe
             <UploadArea onClick={handleUploadClick}>
               <KeySharpIcon fontSize="large" color='primary' />
               <Typography variant="h6" gutterBottom>
-                Click or drop an image in this area
+                Click this area
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Your 2FA QR code image will be automatically detected and parsed
