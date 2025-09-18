@@ -3,9 +3,9 @@
 [![Tests on Linux, MacOS and Windows](https://github.com/15ho/xauth/workflows/Test/badge.svg)](https://github.com/15ho/xauth/actions?query=workflow%3ATest)
 [![codecov](https://codecov.io/gh/15ho/xauth/branch/main/graph/badge.svg)](https://codecov.io/gh/15ho/xauth)
 
-> NOTE: This project is under development.
-
 A Chrome extension for generating TOTP codes.
+
+![demo](demo.gif)
 
 base on:
 - [React](https://reactjs.org/)
@@ -26,4 +26,10 @@ npm run dev # hot reload
 # 1. Chrome open link: chrome://extensions/
 # 2. Enable developer mode
 # 3. Click "Load unpacked" (Select the "dist" directory)
+```
+
+## Release
+```shell
+npm run build # generate "release" directory
+# crx-XAuth-1.0.0.zip
 ```
