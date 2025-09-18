@@ -67,7 +67,7 @@ export default function TOTPListItem(props: { totpKey: TOTPKey, onContextMenu: (
               component="span"
               sx={{ color: 'text.primary', display: 'block', fontStyle: 'oblique' }}
             >
-              {props.totpKey.label}
+              {props.totpKey.issuer ? (props.totpKey.issuer + '(' + props.totpKey.label + ')') : props.totpKey.label}
             </Typography>
           }
           secondary={

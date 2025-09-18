@@ -1,41 +1,33 @@
 import { useEffect, useState } from 'react'
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Box,
-  styled,
-  Fab,
   CssBaseline,
   Paper,
   List,
+  SpeedDial,
+  SpeedDialIcon,
+  SpeedDialAction,
 } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import KeyboardIcon from '@mui/icons-material/Keyboard';
 import LockPersonRoundedIcon from '@mui/icons-material/LockPersonRounded'
 import { TOTPKey, aseDecrypt, aseEncrypt, encryptPasswd, parseTotpKeyUri } from '@/components/common'
 import TOTPListItem from '@/components/TOTPListItem'
 import { storageKeyLockPasswd, storageKeyTOTPKeys } from '../constants/storage'
-import TOTPForm from '@/components/TOTPForm'
+import TOTPParseForm from '@/components/TOTPParseForm'
 import ConfirmDialog from '@/components/ConfirmDialog'
-
-const StyledFab = styled(Fab)({
-  position: 'absolute',
-  zIndex: 1,
-  top: -30,
-  left: 0,
-  right: 0,
-  margin: '0 auto',
-})
+import TOTPEnterForm from '@/components/TOTPEnterForm'
 
 type TOTPKeys = {
   [key: string]: TOTPKey
 }
 
 export default function AppPage(props: { handleLockScreen: () => void }) {
-  const [totpKeyForm, setTotpKeyForm] = useState(false)
+  const [totpKeyParseForm, setTotpKeyParseForm] = useState(false)
+  const [totpKeyEnterForm, setTotpKeyEnterForm] = useState(false)
   const [totpKeys, setTOTPKeys] = useState<TOTPKeys>()
   const [delTotpKeyConfirmDialog, setDelTotpKeyConfirmDialog] = useState(false)
   const [delTotpKeyLabel, setDelTotpKeyLabel] = useState('')
+  const [openMenus, setOpenMenus] = useState(false)
 
 
   useEffect(() => {
@@ -81,7 +73,7 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
       });
       localStorage.setItem('totpKeys', aseEncrypt(JSON.stringify(storageTotpKeys), storageLockPasswd))
     }
-    setTotpKeyForm(false)
+    setTotpKeyParseForm(false)
   }
 
   const handleDelTOTPKey = (confirm: boolean, password: string) => {
@@ -119,6 +111,12 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
     setDelTotpKeyLabel('')
   }
 
+  const actions = [
+    { icon: <KeyboardIcon />, name: 'Enter a setup key', onClick: () => setTotpKeyEnterForm(true) },
+    { icon: <CameraAltIcon />, name: 'Add key from QR code', onClick: () => setTotpKeyParseForm(true) },
+    { icon: <LockPersonRoundedIcon />, name: 'Lock Screen', onClick: () => props.handleLockScreen() },
+  ];
+
 
   return (
     <>
@@ -140,19 +138,32 @@ export default function AppPage(props: { handleLockScreen: () => void }) {
           </List>}
       </Paper>
 
-      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-        <Toolbar>
-          <StyledFab color="secondary" aria-label="add" onClick={() => setTotpKeyForm(true)}>
-            <AddIcon />
-          </StyledFab>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit" onClick={() => props.handleLockScreen()}>
-            <LockPersonRoundedIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      <SpeedDial
+        ariaLabel="Menus"
+        sx={{ position: 'fixed', bottom: 50, right: 30 }}
+        icon={<SpeedDialIcon />}
+        onClose={() => setOpenMenus(false)}
+        onOpen={() => setOpenMenus(true)}
+        open={openMenus}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            color='secondary'
+            slotProps={{
+              tooltip: {
+                title: action.name,
+              },
+            }}
+            onClick={action.onClick}
+          />
+        ))}
+      </SpeedDial>
 
-      {totpKeyForm && (<TOTPForm onClose={() => setTotpKeyForm(false)} onSubmit={handleSubmit} />)}
+      {totpKeyParseForm && (<TOTPParseForm onClose={() => setTotpKeyParseForm(false)} onSubmit={handleSubmit} />)}
+
+      {totpKeyEnterForm && (<TOTPEnterForm onClose={() => setTotpKeyEnterForm(false)} onSubmit={handleSubmit} />)}
 
       {delTotpKeyConfirmDialog &&
         delTotpKeyLabel &&

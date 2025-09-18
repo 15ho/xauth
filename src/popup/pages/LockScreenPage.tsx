@@ -27,7 +27,7 @@ export default function LockScreenPage(props: { onUnlock: () => void }) {
         XAuth
       </Typography>
 
-      <form onSubmit={handleSubmit} style={{ marginTop: '100px' }}>
+      <form onSubmit={handleSubmit} style={{ marginTop: '108px' }}>
         <TextField
           label="Enter your password"
           variant="outlined"
@@ -45,7 +45,7 @@ export default function LockScreenPage(props: { onUnlock: () => void }) {
           type="submit"
           variant="contained"
           sx={{
-            marginTop: '160px',
+            marginTop: '168px',
             width: '88%',
             height: '45px',
             fontSize: '15px',

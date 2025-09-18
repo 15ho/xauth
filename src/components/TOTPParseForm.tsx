@@ -51,7 +51,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }))
 
-export default function TOTPForm(props: { onClose: () => void, onSubmit: (totpKey: TOTPKey) => void }) {
+export default function TOTPParseForm(props: { onClose: () => void, onSubmit: (totpKey: TOTPKey) => void }) {
 
   const [formData, setFormData] = useState<TOTPKey>()
   const [error, setError] = useState<string>('')
